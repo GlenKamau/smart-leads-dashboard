@@ -9,13 +9,9 @@ import { errorResponse } from './utils/response.util';
 const app: Application = express();
 
 app.use(helmet());
-const allowedOrigins = process.env.CORS_ORIGIN
-  ? process.env.CORS_ORIGIN.split(',').map(o => o.trim())
-  : ['http://localhost:3000', 'https://smart-leads-dashboard-amber.vercel.app'];
-
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin || allowedOrigins.some(o => origin.startsWith(o))) {
+    if (!origin || origin.includes('localhost') || origin.endsWith('.vercel.app')) {
       callback(null, true);
     } else {
       callback(null, false);
