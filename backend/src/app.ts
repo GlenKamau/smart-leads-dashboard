@@ -11,7 +11,7 @@ const app: Application = express();
 app.use(helmet());
 const allowedOrigins = process.env.CORS_ORIGIN
   ? process.env.CORS_ORIGIN.split(',').map(o => o.trim())
-  : ['http://localhost:3000'];
+  : ['http://localhost:3000', 'https://smart-leads-dashboard-amber.vercel.app'];
 
 app.use(cors({
   origin: (origin, callback) => {
