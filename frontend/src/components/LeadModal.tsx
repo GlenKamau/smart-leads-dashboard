@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
 import { X } from 'lucide-react';
+import toast from 'react-hot-toast';
 import { leadsApi } from '../api/leads.api';
 import { LeadStatus, LeadSource, Lead } from '../types';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -70,8 +71,13 @@ const LeadModal = ({ isOpen, onClose, leadId }: LeadModalProps) => {
     mutationFn: (data: LeadForm) => leadsApi.createLead(data as Partial<Lead>),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['leads'] });
+      queryClient.invalidateQueries({ queryKey: ['leads-stats'] });
+      toast.success('Lead created successfully');
       onClose();
       reset();
+    },
+    onError: (err: Error) => {
+      toast.error(err.message || 'Failed to create lead');
     },
   });
 
@@ -80,8 +86,14 @@ const LeadModal = ({ isOpen, onClose, leadId }: LeadModalProps) => {
       leadsApi.updateLead(id, data as Partial<Lead>),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['leads'] });
+      queryClient.invalidateQueries({ queryKey: ['leads-stats'] });
+      queryClient.invalidateQueries({ queryKey: ['lead', leadId] });
+      toast.success('Lead updated successfully');
       onClose();
       reset();
+    },
+    onError: (err: Error) => {
+      toast.error(err.message || 'Failed to update lead');
     },
   });
 
@@ -93,7 +105,7 @@ const LeadModal = ({ isOpen, onClose, leadId }: LeadModalProps) => {
         await createMutation.mutateAsync(data);
       }
     } catch (error) {
-      console.error('Error saving lead:', error);
+      // Error handled by onError callbacks above
     }
   };
 
@@ -108,7 +120,6 @@ const LeadModal = ({ isOpen, onClose, leadId }: LeadModalProps) => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 bg-black/50 backdrop-blur-sm"
-            onClick={onClose}
           />
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 10 }}

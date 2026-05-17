@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Search, SlidersHorizontal, Download, Plus } from 'lucide-react';
 import { motion } from 'framer-motion';
+import toast from 'react-hot-toast';
 import { leadsApi, LeadFilters } from '../api/leads.api';
 import { LeadStatus, LeadSource } from '../types';
 import { useDebounce } from '../hooks/useDebounce';
@@ -43,6 +44,10 @@ const Dashboard = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['leads'] });
       queryClient.invalidateQueries({ queryKey: ['leads-stats'] });
+      toast.success('Lead deleted successfully');
+    },
+    onError: (err: Error) => {
+      toast.error(err.message || 'Failed to delete lead');
     },
   });
 
@@ -69,8 +74,9 @@ const Dashboard = () => {
       a.download = 'leads.csv';
       a.click();
       window.URL.revokeObjectURL(url);
+      toast.success('Leads exported successfully');
     } catch (err) {
-      console.error('Export failed:', err);
+      toast.error('Failed to export leads');
     }
   }, [filters]);
 

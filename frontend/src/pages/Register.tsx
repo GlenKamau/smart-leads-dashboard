@@ -9,10 +9,18 @@ import { authApi } from '../api/auth.api';
 import { useAuthStore } from '../store/auth.store';
 import { UserRole } from '../types';
 
+const passwordSchema = z
+  .string()
+  .min(8, 'Password must be at least 8 characters')
+  .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
+  .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
+  .regex(/[0-9]/, 'Password must contain at least one number')
+  .regex(/[^A-Za-z0-9]/, 'Password must contain at least one special character');
+
 const registerSchema = z.object({
   name: z.string().min(1, 'Name is required').max(100, 'Name too long'),
-  email: z.string().email('Invalid email address'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
+  email: z.string().email('Please enter a valid email address (e.g., name@example.com)'),
+  password: passwordSchema,
   role: z.enum([UserRole.ADMIN, UserRole.SALES]).default(UserRole.SALES),
 });
 
@@ -157,7 +165,7 @@ const Register = () => {
                   {...register('password')}
                   type="password"
                   className="input-field pl-10"
-                  placeholder="Min. 6 characters"
+                  placeholder="Min. 8 chars, 1 upper, 1 lower, 1 number, 1 special"
                 />
               </div>
               {errors.password && (
