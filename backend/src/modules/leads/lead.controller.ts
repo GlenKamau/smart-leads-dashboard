@@ -224,8 +224,14 @@ export const updateLead = async (req: AuthRequest, res: Response): Promise<Respo
       }
     }
 
+    const isAdmin = req.user?.role === 'admin';
+    const query: Record<string, unknown> = { _id: id };
+    if (!isAdmin) {
+      query.owner = req.user!.id;
+    }
+
     const lead = await Lead.findOneAndUpdate(
-      { _id: id, owner: req.user!.id },
+      query,
       { $set: setData },
       { new: true, runValidators: true }
     );
@@ -262,8 +268,13 @@ export const updateLead = async (req: AuthRequest, res: Response): Promise<Respo
 export const deleteLead = async (req: AuthRequest, res: Response): Promise<Response> => {
   try {
     const { id } = req.params;
+    const isAdmin = req.user?.role === 'admin';
+    const query: Record<string, unknown> = { _id: id };
+    if (!isAdmin) {
+      query.owner = req.user!.id;
+    }
 
-    const lead = await Lead.findOneAndDelete({ _id: id, owner: req.user!.id });
+    const lead = await Lead.findOneAndDelete(query);
 
     if (!lead) {
       return errorResponse(res, 'Lead not found', 404);

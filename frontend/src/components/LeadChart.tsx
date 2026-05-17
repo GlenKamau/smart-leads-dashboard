@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { useThemeStore } from '../store/theme.store';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 
@@ -23,6 +24,11 @@ const COLORS = {
 
 const LeadChart = ({ data }: LeadChartProps) => {
   const isDark = useThemeStore((state) => state.isDark);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const chartData = [
     { name: 'New', value: data.new, color: COLORS.new },
@@ -39,34 +45,36 @@ const LeadChart = ({ data }: LeadChartProps) => {
     <div className="card p-5">
       <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-4">Lead Distribution</h3>
       <div className="flex items-center gap-6">
-        <div className="w-32 h-32">
-          <ResponsiveContainer width="100%" height="100%">
-            <PieChart>
-              <Pie
-                data={chartData}
-                cx="50%"
-                cy="50%"
-                innerRadius={28}
-                outerRadius={48}
-                paddingAngle={2}
-                dataKey="value"
-                stroke="none"
-              >
-                {chartData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.color} />
-                ))}
-              </Pie>
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: isDark ? '#1a1d27' : '#fff',
-                  border: `1px solid ${isDark ? '#2a2d3a' : '#e5e7eb'}`,
-                  borderRadius: '8px',
-                  fontSize: '12px',
-                  color: isDark ? '#e5e7eb' : '#111827',
-                }}
-              />
-            </PieChart>
-          </ResponsiveContainer>
+        <div className="w-32 h-32 min-w-0">
+          {mounted && (
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={chartData}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={28}
+                  outerRadius={48}
+                  paddingAngle={2}
+                  dataKey="value"
+                  stroke="none"
+                >
+                  {chartData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: isDark ? '#1a1d27' : '#fff',
+                    border: `1px solid ${isDark ? '#2a2d3a' : '#e5e7eb'}`,
+                    borderRadius: '8px',
+                    fontSize: '12px',
+                    color: isDark ? '#e5e7eb' : '#111827',
+                  }}
+                />
+              </PieChart>
+            </ResponsiveContainer>
+          )}
         </div>
         <div className="flex-1 space-y-2">
           {chartData.map((item) => (

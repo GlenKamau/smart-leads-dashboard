@@ -14,15 +14,17 @@ import {
   leadIdValidation,
 } from './lead.validation';
 import { authenticate } from '../../middleware/auth.middleware';
+import { authorize } from '../../middleware/role.middleware';
+import { UserRole } from '../../constants/enums';
 
 const router = Router();
 
-router.get('/stats', authenticate, getLeadStats);
-router.post('/', authenticate, createLeadValidation, createLead);
-router.get('/', authenticate, getAllLeads);
-router.get('/export', authenticate, exportLeads);
-router.get('/:id', authenticate, leadIdValidation, getLeadById);
-router.put('/:id', authenticate, updateLeadValidation, updateLead);
-router.delete('/:id', authenticate, leadIdValidation, deleteLead);
+router.get('/stats', authenticate, authorize(UserRole.ADMIN, UserRole.SALES), getLeadStats);
+router.post('/', authenticate, authorize(UserRole.ADMIN, UserRole.SALES), createLeadValidation, createLead);
+router.get('/', authenticate, authorize(UserRole.ADMIN, UserRole.SALES), getAllLeads);
+router.get('/export', authenticate, authorize(UserRole.ADMIN, UserRole.SALES), exportLeads);
+router.get('/:id', authenticate, authorize(UserRole.ADMIN, UserRole.SALES), leadIdValidation, getLeadById);
+router.put('/:id', authenticate, authorize(UserRole.ADMIN, UserRole.SALES), updateLeadValidation, updateLead);
+router.delete('/:id', authenticate, authorize(UserRole.ADMIN, UserRole.SALES), leadIdValidation, deleteLead);
 
 export default router;

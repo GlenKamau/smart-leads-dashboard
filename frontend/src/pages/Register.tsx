@@ -40,7 +40,8 @@ const Register = () => {
       setAuth(response.token, response.user);
       navigate('/');
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Registration failed');
+      const axiosError = err as { response?: { data?: { message?: string; error?: string } } };
+      setError(axiosError?.response?.data?.error || axiosError?.response?.data?.message || 'Registration failed');
     } finally {
       setIsLoading(false);
     }

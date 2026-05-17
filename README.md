@@ -198,10 +198,38 @@ GET /api/leads?status=New&source=Website&search=John&sort=latest&page=1&limit=10
 }
 ```
 
-## User Roles
+## User Roles & Permissions
 
-- **Admin**: Full access to all features
-- **Sales**: Can manage own leads only
+The application implements role-based access control (RBAC) with two roles:
+
+### Admin
+
+Has full unrestricted access across the entire system:
+
+| Permission | Scope |
+|-----------|-------|
+| View all leads | All leads in the system |
+| Create leads | Yes |
+| Edit any lead | All leads (regardless of owner) |
+| Delete any lead | All leads (regardless of owner) |
+| View lead details | All leads |
+| Export leads to CSV | All leads (with filters) |
+| View statistics | Aggregated across all leads |
+| Register new users | Can create accounts with any role |
+
+### Sales
+
+Restricted to self-owned data only:
+
+| Permission | Scope |
+|-----------|-------|
+| View leads | Own leads only |
+| Create leads | Yes (auto-assigned as owner) |
+| Edit leads | Own leads only |
+| Delete leads | Own leads only |
+| View lead details | Own leads only |
+| Export leads to CSV | Own leads only (with filters) |
+| View statistics | Own leads only |
 
 ## Features
 

@@ -37,7 +37,8 @@ const Login = () => {
       setAuth(response.token, response.user);
       navigate('/');
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Login failed');
+      const axiosError = err as { response?: { data?: { message?: string; error?: string } } };
+      setError(axiosError?.response?.data?.error || axiosError?.response?.data?.message || 'Login failed');
     } finally {
       setIsLoading(false);
     }
