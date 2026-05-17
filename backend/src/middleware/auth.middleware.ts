@@ -7,7 +7,7 @@ export interface AuthRequest extends Request {
 }
 
 export const authenticate = (
-  req: Request,
+  req: AuthRequest,
   res: Response,
   next: NextFunction
 ): void | Response => {
@@ -21,7 +21,8 @@ export const authenticate = (
     const token = authHeader.split(' ')[1];
     const decoded = verifyToken(token);
 
-    (req as AuthRequest).user = decoded;
+    req.user = decoded;
+
     next();
   } catch (error) {
     return errorResponse(res, 'Invalid or expired token', 401);
