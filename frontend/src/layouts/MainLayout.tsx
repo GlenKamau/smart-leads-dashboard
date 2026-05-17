@@ -5,7 +5,7 @@ const MainLayout = () => {
   return (
     <div className="min-h-screen bg-surface-secondary dark:bg-surface-dark">
       <Sidebar />
-      <main className="pl-64 min-h-screen">
+      <main className="lg:pl-64 min-h-screen">
         <Outlet />
       </main>
     </div>

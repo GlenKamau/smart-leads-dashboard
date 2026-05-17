@@ -77,7 +77,7 @@ const LeadDetails = () => {
 
   if (isLoading) {
     return (
-      <div className="p-6 lg:p-8">
+      <div className="p-4 sm:p-6 lg:p-8 pt-16 lg:pt-8">
         <div className="card p-12">
           <div className="flex flex-col items-center gap-4">
             <div className="w-8 h-8 border-2 border-brand-500 border-t-transparent rounded-full animate-spin" />
@@ -90,7 +90,7 @@ const LeadDetails = () => {
 
   if (isError || !lead) {
     return (
-      <div className="p-6 lg:p-8">
+      <div className="p-4 sm:p-6 lg:p-8 pt-16 lg:pt-8">
         <div className="card p-12 text-center">
           <p className="text-sm text-red-500 mb-4">Failed to load lead</p>
           <Link to="/" className="text-sm text-brand-600 dark:text-brand-400 hover:underline">
@@ -102,7 +102,7 @@ const LeadDetails = () => {
   }
 
   return (
-    <div className="p-6 lg:p-8 animate-fade-in">
+    <div className="p-4 sm:p-6 lg:p-8 pt-16 lg:pt-8 animate-fade-in">
       <motion.div
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}

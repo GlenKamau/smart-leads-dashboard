@@ -77,12 +77,12 @@ const Dashboard = () => {
   const stats = statsData || { total: 0, new: 0, contacted: 0, qualified: 0, proposal: 0, won: 0, lost: 0 };
 
   return (
-    <div className="p-6 lg:p-8 animate-fade-in">
+    <div className="p-4 sm:p-6 lg:p-8 animate-fade-in pt-16 lg:pt-8">
       <motion.div
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
-        className="flex items-center justify-between mb-8"
+        className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 sm:mb-8"
       >
         <div>
           <h1 className="text-xl font-bold text-gray-900 dark:text-white">Leads Dashboard</h1>
@@ -90,7 +90,7 @@ const Dashboard = () => {
             Manage and track your leads
           </p>
         </div>
-        <button onClick={handleCreate} className="btn-primary">
+        <button onClick={handleCreate} className="btn-primary w-full sm:w-auto">
           <Plus className="w-4 h-4" />
           New Lead
         </button>
@@ -109,25 +109,25 @@ const Dashboard = () => {
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3, delay: 0.2 }}
-        className="card p-4 mb-6"
+        className="card p-3 sm:p-4 mb-6"
       >
-        <div className="flex flex-wrap items-center gap-3">
-          <div className="relative flex-1 min-w-[240px]">
+        <div className="flex flex-col sm:flex-row gap-3">
+          <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
             <input
               type="text"
               placeholder="Search by name or email..."
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
-              className="input-field pl-10"
+              className="input-field pl-10 w-full"
             />
           </div>
-          <div className="flex items-center gap-2">
-            <div className="relative">
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="relative flex-1 sm:flex-none">
               <select
                 value={filters.status || ''}
                 onChange={(e) => handleFilterChange('status', e.target.value)}
-                className="input-field pr-8 appearance-none cursor-pointer min-w-[130px]"
+                className="input-field pr-8 appearance-none cursor-pointer w-full sm:min-w-[130px]"
               >
                 <option value="">All Status</option>
                 <option value={LeadStatus.NEW}>New</option>
@@ -139,11 +139,11 @@ const Dashboard = () => {
               </select>
               <SlidersHorizontal className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400 pointer-events-none" />
             </div>
-            <div className="relative">
+            <div className="relative flex-1 sm:flex-none">
               <select
                 value={filters.source || ''}
                 onChange={(e) => handleFilterChange('source', e.target.value)}
-                className="input-field pr-8 appearance-none cursor-pointer min-w-[130px]"
+                className="input-field pr-8 appearance-none cursor-pointer w-full sm:min-w-[130px]"
               >
                 <option value="">All Sources</option>
                 <option value={LeadSource.WEBSITE}>Website</option>
@@ -156,18 +156,18 @@ const Dashboard = () => {
               </select>
               <SlidersHorizontal className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400 pointer-events-none" />
             </div>
-            <div className="relative">
+            <div className="relative flex-1 sm:flex-none">
               <select
                 value={filters.sort || 'latest'}
                 onChange={(e) => handleFilterChange('sort', e.target.value)}
-                className="input-field pr-8 appearance-none cursor-pointer min-w-[130px]"
+                className="input-field pr-8 appearance-none cursor-pointer w-full sm:min-w-[130px]"
               >
                 <option value="latest">Latest First</option>
                 <option value="oldest">Oldest First</option>
               </select>
               <SlidersHorizontal className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400 pointer-events-none" />
             </div>
-            <button onClick={handleExport} className="btn-secondary">
+            <button onClick={handleExport} className="btn-secondary w-full sm:w-auto">
               <Download className="w-4 h-4" />
               Export
             </button>

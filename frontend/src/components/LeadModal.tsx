@@ -115,9 +115,9 @@ const LeadModal = ({ isOpen, onClose, leadId }: LeadModalProps) => {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 10 }}
             transition={{ duration: 0.2 }}
-            className="relative w-full max-w-lg bg-white dark:bg-surface-dark-secondary rounded-2xl shadow-modal border border-border dark:border-border-dark overflow-hidden"
+            className="relative w-full max-w-lg bg-white dark:bg-surface-dark-secondary rounded-2xl shadow-modal border border-border dark:border-border-dark overflow-hidden max-sm:mx-2 max-sm:max-h-[90vh]"
           >
-            <div className="flex items-center justify-between px-6 py-4 border-b border-border dark:border-border-dark">
+            <div className="flex items-center justify-between px-4 sm:px-6 py-4 border-b border-border dark:border-border-dark">
               <h2 className="text-base font-semibold text-gray-900 dark:text-white">
                 {leadId ? 'Edit Lead' : 'New Lead'}
               </h2>
@@ -125,8 +125,8 @@ const LeadModal = ({ isOpen, onClose, leadId }: LeadModalProps) => {
                 <X className="w-4 h-4" />
               </button>
             </div>
-            <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-4 max-h-[70vh] overflow-y-auto">
-              <div className="grid grid-cols-2 gap-4">
+            <form onSubmit={handleSubmit(onSubmit)} className="p-4 sm:p-6 space-y-4 max-h-[70vh] max-sm:max-h-[calc(90vh-64px)] overflow-y-auto">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="label">First Name</label>
                   <input {...register('firstName')} className="input-field" placeholder="John" />
@@ -143,7 +143,7 @@ const LeadModal = ({ isOpen, onClose, leadId }: LeadModalProps) => {
                 <input {...register('email')} type="email" className="input-field" placeholder="john@example.com" />
                 {errors.email && <p className="text-xs text-red-500 mt-1">{errors.email.message}</p>}
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="label">Phone</label>
                   <input {...register('phone')} className="input-field" placeholder="+1 234 567 890" />
@@ -152,8 +152,6 @@ const LeadModal = ({ isOpen, onClose, leadId }: LeadModalProps) => {
                   <label className="label">Company</label>
                   <input {...register('company')} className="input-field" placeholder="Acme Inc" />
                 </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="label">Position</label>
                   <input {...register('position')} className="input-field" placeholder="CEO" />
@@ -169,8 +167,6 @@ const LeadModal = ({ isOpen, onClose, leadId }: LeadModalProps) => {
                     <option value={LeadStatus.LOST}>Lost</option>
                   </select>
                 </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="label">Source</label>
                   <select {...register('source')} className="input-field">
@@ -183,7 +179,7 @@ const LeadModal = ({ isOpen, onClose, leadId }: LeadModalProps) => {
                     <option value={LeadSource.OTHER}>Other</option>
                   </select>
                 </div>
-                <div>
+                <div className="sm:col-span-2">
                   <label className="label">Notes</label>
                   <textarea {...register('notes')} className="input-field" rows={3} />
                 </div>

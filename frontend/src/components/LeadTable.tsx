@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { MoreHorizontal, Edit2, Trash2, ExternalLink, Users } from 'lucide-react';
 import { Lead } from '../types';
@@ -30,6 +30,19 @@ const sourceStyles: Record<string, string> = {
 
 const LeadTable = ({ leads, onEdit, onDelete }: LeadTableProps) => {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setOpenDropdown(null);
+      }
+    };
+    if (openDropdown) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [openDropdown]);
 
   if (leads.length === 0) {
     return (
@@ -46,7 +59,7 @@ const LeadTable = ({ leads, onEdit, onDelete }: LeadTableProps) => {
   return (
     <div className="card overflow-hidden">
       <div className="overflow-x-auto">
-        <table className="w-full">
+        <table className="w-full min-w-[640px]">
           <thead>
             <tr className="border-b border-border dark:border-border-dark bg-surface-secondary dark:bg-surface-dark-tertiary">
               <th className="text-left px-5 py-3.5 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Name</th>
@@ -83,7 +96,7 @@ const LeadTable = ({ leads, onEdit, onDelete }: LeadTableProps) => {
                     {lead.source.charAt(0).toUpperCase() + lead.source.slice(1)}
                   </span>
                 </td>
-                <td className="px-5 py-4 text-sm text-gray-500 dark:text-gray-400">
+                <td className="px-5 py-4 text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">
                   {new Date(lead.createdAt).toLocaleDateString('en-US', {
                     month: 'short',
                     day: 'numeric',
@@ -98,25 +111,22 @@ const LeadTable = ({ leads, onEdit, onDelete }: LeadTableProps) => {
                     <MoreHorizontal className="w-4 h-4" />
                   </button>
                   {openDropdown === lead._id && (
-                    <>
-                      <div className="fixed inset-0 z-10" onClick={() => setOpenDropdown(null)} />
-                      <div className="absolute right-4 top-12 z-20 w-36 bg-white dark:bg-surface-dark-secondary border border-border dark:border-border-dark rounded-lg shadow-elevated py-1 animate-scale-in">
-                        <button
-                          onClick={() => { onEdit(lead._id); setOpenDropdown(null); }}
-                          className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-surface-tertiary dark:hover:bg-surface-dark-tertiary"
-                        >
-                          <Edit2 className="w-3.5 h-3.5" />
-                          Edit
-                        </button>
-                        <button
-                          onClick={() => { onDelete(lead._id); setOpenDropdown(null); }}
-                          className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                          Delete
-                        </button>
-                      </div>
-                    </>
+                    <div ref={dropdownRef} className="absolute right-1 top-12 z-20 w-36 bg-white dark:bg-surface-dark-secondary border border-border dark:border-border-dark rounded-lg shadow-elevated py-1 animate-scale-in">
+                      <button
+                        onClick={() => { onEdit(lead._id); setOpenDropdown(null); }}
+                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-surface-tertiary dark:hover:bg-surface-dark-tertiary"
+                      >
+                        <Edit2 className="w-3.5 h-3.5" />
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => { onDelete(lead._id); setOpenDropdown(null); }}
+                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                        Delete
+                      </button>
+                    </div>
                   )}
                 </td>
               </tr>
