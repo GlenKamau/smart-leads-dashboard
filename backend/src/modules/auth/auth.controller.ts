@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { validationResult, Result, ValidationError } from 'express-validator';
+import { validationResult } from 'express-validator';
 import User from '../../models/User';
 import { generateToken } from '../../utils/jwt.util';
 import { createdResponse, errorResponse, successResponse } from '../../utils/response.util';
@@ -19,7 +19,7 @@ interface LoginBody {
   password: string;
 }
 
-const validateRequest = (req: Request): Result<ValidationError> => {
+const validateRequest = (req: Request) => {
   return validationResult(req);
 };
 

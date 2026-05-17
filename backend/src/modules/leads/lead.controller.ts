@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { validationResult, Result, ValidationError } from 'express-validator';
+import { validationResult } from 'express-validator';
 import Lead from '../../models/Lead';
 import { errorResponse, successResponse, createdResponse } from '../../utils/response.util';
 import { AuthRequest } from '../../middleware/auth.middleware';
@@ -46,7 +46,7 @@ interface LeadQueryParams {
   limit?: string;
 }
 
-const validateRequest = (req: AuthRequest): Result<ValidationError> => {
+const validateRequest = (req: AuthRequest) => {
   return validationResult(req);
 };
 
